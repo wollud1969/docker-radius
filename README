@@ -1,0 +1,16 @@
+Wolfgang Hottgenroth <wolfgang.hottgenroth@icloud.com>
+
+1. Clone freeradius/freeradius-server from Github
+2. Build the docker image freeradius/debian9
+   - Go into dir freeradius-server/scripts/docker
+   - Run ./dockerbuild build-debian9
+3. Run build.sh from this repo
+4. Create a radius-data volume
+5. Start new container using 
+   docker run -p 1812:1812/udp -v radius-data:/opt/freeradius/etc/myconf wollud1969/radiusd:1.1
+6. First start will fail with SSL error messages
+7. Put your own ca, certificate and key into radius-data/_data/certs, make sure the key is not password protected
+8. Start container again, now it should work
+9. Edit radius-data/_data/clients.conf and radius-data/_data/authorize
+10. Restart container
+
