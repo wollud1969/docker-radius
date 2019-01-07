@@ -11,6 +11,5 @@ Wolfgang Hottgenroth <wolfgang.hottgenroth@icloud.com>
 6. First start will fail with SSL error messages
 7. Put your own ca, certificate and key into radius-data/_data/certs, make sure the key is not password protected
 8. Start container again, now it should work
-9. Edit radius-data/_data/clients.conf and radius-data/_data/authorize
-10. Restart container
+9. Restart container
 

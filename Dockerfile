@@ -2,20 +2,23 @@ FROM freeradius/debian9
 MAINTAINER Wolfgang Hottgenroth <wolfgang.hottgenroth@icloud.com>
 
 ARG RADDB="/opt/freeradius/etc/raddb"
+ARG RADDB_DIST="/opt/freeradius/etc/raddb.dist"
 ARG MYCONF="/opt/freeradius/etc/myconf"
 
 RUN \
   mkdir $MYCONF && \
-  mv $RADDB/mods-config/files/authorize $MYCONF && \
-  ln -s $MYCONF/authorize $RADDB/mods-config/files/authorize && \
-  mv $RADDB/clients.conf $MYCONF && \
-  ln -s $MYCONF/clients.conf $RADDB/clients.conf && \
+  mkdir $MYCONF/logs && \
   mkdir $MYCONF/certs && \
-  sed -i -e "s,^certdir.\+$,certdir = "$MYCONF"/certs," $RADDB/radiusd.conf && \
-  sed -i -e "s,^cadir.\+$,cadir = "$MYCONF"/certs," $RADDB/radiusd.conf && \
   mv $RADDB/certs/ca.pem $MYCONF/certs && \
   mv $RADDB/certs/dh $MYCONF/certs && \
   mv $RADDB/certs/server.key $MYCONF/certs && \
   mv $RADDB/certs/server.pem $MYCONF/certs && \
-  sed -i -e "s/^\s\+private_key_password/# private_key_password/" $RADDB/mods-available/eap 
+  mv $RADDB $RADDB_DIST && \
+  mkdir $RADDB 
   
+COPY radiusd.conf $RADDB
+COPY clients.conf $MYCONF
+
+EXPOSE 1812/udp
+CMD ["/opt/freeradius/sbin/radiusd", "-X" ]
+
