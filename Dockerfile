@@ -21,5 +21,5 @@ COPY clients.conf $MYCONF
 COPY users $MYCONF
 
 EXPOSE 1812/udp
-CMD ["/opt/freeradius/sbin/radiusd", "-X" ]
+CMD ["/opt/freeradius/sbin/radiusd", "-fl stdout" ]
 
